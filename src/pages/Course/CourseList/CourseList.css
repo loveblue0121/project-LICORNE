@@ -245,7 +245,8 @@ header {
   margin-top: 100px;
 }
 .diffuser__box img {
-  width: 100%;
+  width: 600px;
+  height: 600px;
   position: relative;
   left: 250px;
 }
@@ -354,6 +355,7 @@ header {
   height: 550px;
   border-radius: 10px;
   background: #ccc;
+  overflow: hidden;
 }
 .check__place-btn {
   width: 160px;
@@ -366,4 +368,8 @@ header {
   bottom: 15px;
   color: var(--c-white);
   font-size: var(--fs-span);
+}
+.modal__marker {
+  width: 24px;
+  height: 24px;
 }
