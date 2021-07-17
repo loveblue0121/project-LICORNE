@@ -3,6 +3,7 @@ import './CourseList.css';
 import { imgPath } from '../../../config';
 import CourseContent from './CourseContent';
 import CourseForm from './CourseForm';
+
 //import CourseImgTitle from './CourseImgTitle';
 
 const infoBtnClassName = 'infoBtnClassName';
@@ -14,6 +15,15 @@ function CourseList() {
   const [click, setClick] = useState('info_btnCheck');
   const [clickInfo, setClickInfo] = useState('infoBtnClassName');
 
+  // Modal開關
+  const [showModal, setShowModal] = useState(false);
+  function showModalHandler() {
+    setShowModal(true);
+  }
+  function closeModalHandler() {
+    setShowModal(false);
+  }
+  //切換下方資訊狀態
   const clickInfoBtn = (changeClassName, unChangeClassName) => (e) => {
     setInfoBtn(true);
     setClickInfo(changeClassName);
@@ -47,6 +57,9 @@ function CourseList() {
             submitForm={submitForm}
             value={value}
             onChange={onChange}
+            showModalHandler={showModalHandler}
+            closeModalHandler={closeModalHandler}
+            showModal={showModal}
           />
         </aside>
       </div>

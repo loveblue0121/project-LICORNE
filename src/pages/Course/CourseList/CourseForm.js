@@ -2,9 +2,18 @@ import React from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { FiHeart, FiRotateCcw } from 'react-icons/fi';
+import CourseMapModal from './CourseMapModal';
+import Backdrop from './Backdrop';
 
 function CourseForm(props) {
-  const { submitForm, onChange, value } = props;
+  const {
+    submitForm,
+    onChange,
+    value,
+    showModalHandler,
+    closeModalHandler,
+    showModal,
+  } = props;
   return (
     <>
       <div className="recheck__width d-flex justify-content-end">
@@ -17,7 +26,12 @@ function CourseForm(props) {
         <div className="fontContent">
           <div className="block_select">
             <label className="labelText">地點</label>
-            <button className="palce__select">請選擇店鋪</button>
+            <input
+              type="button"
+              value="請選擇店鋪"
+              className="palce__select"
+              onClick={showModalHandler}
+            />
           </div>
 
           <div className="block_select">
@@ -63,6 +77,8 @@ function CourseForm(props) {
             </div>
           </div>
         </div>
+        {showModal && <Backdrop onClick={closeModalHandler} />}
+        {showModal && <CourseMapModal closeModalHandler={closeModalHandler} />}
       </form>
     </>
   );
