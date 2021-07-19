@@ -4,25 +4,15 @@ import { imgPath } from '../../../config';
 import CourseContent from './CourseContent';
 import CourseForm from './CourseForm';
 
-//import CourseImgTitle from './CourseImgTitle';
-
 const infoBtnClassName = 'infoBtnClassName';
 const defaultClassName = 'info_btnCheck';
 
 function CourseList() {
   const [infoBtn, setInfoBtn] = useState(true);
-  const [value, onChange] = useState(new Date());
+
   const [click, setClick] = useState('info_btnCheck');
   const [clickInfo, setClickInfo] = useState('infoBtnClassName');
 
-  // Modal開關
-  const [showModal, setShowModal] = useState(false);
-  function showModalHandler() {
-    setShowModal(true);
-  }
-  function closeModalHandler() {
-    setShowModal(false);
-  }
   //切換下方資訊狀態
   const clickInfoBtn = (changeClassName, unChangeClassName) => (e) => {
     setInfoBtn(true);
@@ -36,12 +26,6 @@ function CourseList() {
     setClickInfo(unChangeClassName);
   };
 
-  const submitForm = (e) => {
-    //const data = new FormData(e.target);
-
-    console.log('送出報名');
-  };
-
   return (
     <>
       <div className="content">
@@ -53,14 +37,7 @@ function CourseList() {
           <h1 className="title">香水調製工作坊</h1>
           <p className="title_content">調配屬於你的氣味與風格</p>
 
-          <CourseForm
-            submitForm={submitForm}
-            value={value}
-            onChange={onChange}
-            showModalHandler={showModalHandler}
-            closeModalHandler={closeModalHandler}
-            showModal={showModal}
-          />
+          <CourseForm />
         </aside>
       </div>
       <section className="course_info">

@@ -1,4 +1,12 @@
-function CourseClassRoom({ name, address, phone }) {
+import React from 'react';
+
+function CourseClassRoom(props) {
+  const { name, address, phone, clickLatLng } = props;
+
+  function clickSetPlace() {
+    props.setSelectForm(name);
+    clickLatLng();
+  }
   const routeLinkHandler = (e) => {
     e.preventDefault();
   };
@@ -16,7 +24,12 @@ function CourseClassRoom({ name, address, phone }) {
         <a href="/" className="modal__route-link" onClick={routeLinkHandler}>
           前往路線
         </a>
-        <button className="modal__store-btn">選擇店鋪</button>
+        <input
+          type="button"
+          className="modal__store-btn"
+          value="選擇店鋪"
+          onClick={clickSetPlace}
+        />
       </div>
     </>
   );

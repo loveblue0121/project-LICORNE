@@ -26,7 +26,11 @@ const MarkerIcon = () => {
 };
 
 function CourseMapModal(props) {
-  const { closeModalHandler } = props;
+  //設定選擇店鋪
+  const { closeModalHandler, setSelectForm } = props;
+
+  //const [select, setSelect] = useState('');
+
   // json抓出經緯度
   const [jsonArrayLatLng, setJsonArrayLatLng] = useState([]);
 
@@ -35,16 +39,16 @@ function CourseMapModal(props) {
   // const [lng, setLng] = useState(0);
   const [defaultLatLng, setDefaultLatLng] = useState({ lat: 0, lng: 0 });
 
-  console.log(JSON.stringify(defaultLatLng));
-
-  const [show, setShow] = useState(false);
+  //console.log(JSON.stringify(defaultLatLng));
 
   //預設顯示資訊
   const [shops, setShops] = useState([
     {
-      course_place_name: '高雄小港旗艦店',
+      course_place_name: '高雄民益店',
       course_place_address: '高雄市小港區民益路13號',
       course_place_phone: '07-8012255',
+      course_place_lat: '22.5662669501168',
+      course_place_lng: '120.34782427919656',
     },
   ]);
 
@@ -60,6 +64,7 @@ function CourseMapModal(props) {
     setShops(results);
   };
   // 顯示鄰近店鋪
+  const [show, setShow] = useState(false);
   const clickShow = (e) => {
     setShow(true);
   };
@@ -67,8 +72,8 @@ function CourseMapModal(props) {
   //自動定位目前位置
   const defaultProps = {
     center: {
-      lat: 0,
-      lng: 0,
+      lat: 22.573696160103022,
+      lng: 120.34492822739263,
     },
     zoom: 16,
   };
@@ -146,6 +151,13 @@ function CourseMapModal(props) {
                   name={shop.course_place_name}
                   address={shop.course_place_address}
                   phone={shop.course_place_phone}
+                  setSelectForm={setSelectForm}
+                  clickLatLng={() => {
+                    setDefaultLatLng({
+                      lat: shop.course_place_lat,
+                      lng: shop.course_place_lng,
+                    });
+                  }}
                 />
               );
             })}
@@ -171,9 +183,12 @@ function CourseMapModal(props) {
             </GoogleMapReact>
           </div>
         </div>
-        <button className="check__place-btn" onClick={closeModalHandler}>
-          確認店鋪
-        </button>
+        <input
+          type="button"
+          className="check__place-btn"
+          value="確認店鋪"
+          onClick={closeModalHandler}
+        />
       </div>
     </>
   );
