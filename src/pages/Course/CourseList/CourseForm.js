@@ -5,59 +5,79 @@ import { FiHeart, FiRotateCcw } from 'react-icons/fi';
 import CourseMapModal from './CourseMapModal';
 import Backdrop from './Backdrop';
 
-const defaultPlace = '請選擇店鋪';
-const defaultProgram = '半日體驗';
-const defaultTime = '09:00 - 12:00';
-const defaultPrice = '單人 NT$ 1,200';
-const defaultDate = new Date();
 const selectPrograms = [
   {
     program: '半日體驗',
     price: ['單人 NT$ 1,200', '雙人 NT$ 2,000', '四人 NT$ 3,500'],
+    time: ['09:00 - 12:00', '14:00 - 17:00'],
   },
   {
     program: '一日體驗',
     price: ['單人 NT$ 2,000', '雙人 NT$ 3,600', '四人 NT$ 5,500'],
+    time: ['09:00 - 17:00'],
   },
 ];
 
+const defaultPlace = '請選擇店鋪';
+
+const defaultProgram = {
+  selectProgram: selectPrograms[0].program,
+  selectPrice: selectPrograms[0].price[0],
+  selectTime: selectPrograms[0].time[0],
+};
+const defaultDate = new Date();
+
 const initialFormData = Object.freeze({
-  form__place: '',
-  form__program: '',
-  form__calendar: '',
-  form__time: '',
-  form__price: '',
+  form__place: defaultPlace,
+  form__program: defaultProgram,
+  form__calendar: defaultDate,
+  // form__time: '09:00 - 12:00',
+  // form__price: '單人 NT$ 1,200',
 });
 
-function CourseForm() {
+function CourseForm(props) {
+  const { placeLatLng } = props;
+  // 預設值
+  const [place, setPlace] = useState(defaultPlace);
+  const [dateValue, setDateValue] = useState(defaultDate);
+
+  // Modal開關
+  const [showModal, setShowModal] = useState(false);
+  // 連動下拉式選單
+  const [doSelect, setDoSelect] = useState({
+    selectProgram: selectPrograms[0].program,
+    selectPrice: selectPrograms[0].price[0],
+    selectTime: selectPrograms[0].time[0],
+  });
+
   // 送出表單
   const form = useRef(null);
   const [formData, updateFormData] = useState(initialFormData);
-
+  // 將更改表單內容存進formData
   const handleChange = (e) => {
     updateFormData({
       ...formData,
       [e.target.name]: e.target.value.trim(),
     });
   };
-
+  //點選報名按鈕
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+
+    console.log(JSON.stringify(formData));
     // ... submit to API or something
   };
 
-  // 連動下拉式選單
-  const [doSelect, setDoSelect] = useState({
-    selectProgram: selectPrograms[0].program,
-    selectPrice: selectPrograms[0].price[0],
-  });
-
+  // 連動下拉式選單 onChange + 更新formData
   const changeProgram = (e) => {
     //setDoSelect({ selectProgram: e.target.value });
     selectPrograms.map((v, i) => {
       if (e.target.value === v.program) {
-        setDoSelect({ selectProgram: e.target.value, selectPrice: v.price[0] });
+        setDoSelect({
+          selectProgram: e.target.value,
+          selectPrice: v.price[0],
+          selectTime: v.time[0],
+        });
       }
       return true;
     });
@@ -66,11 +86,22 @@ function CourseForm() {
       [e.target.name]: e.target.value.trim(),
     });
   };
-
+  const changeTime = (e) => {
+    setDoSelect({
+      selectProgram: doSelect.selectProgram,
+      selectPrice: e.target.value,
+      selectTime: e.target.value,
+    });
+    updateFormData({
+      ...formData,
+      [e.target.name]: e.target.value.trim(),
+    });
+  };
   const changePrice = (e) => {
     setDoSelect({
       selectProgram: doSelect.selectProgram,
       selectPrice: e.target.value,
+      selectTime: e.target.value,
     });
     updateFormData({
       ...formData,
@@ -82,6 +113,13 @@ function CourseForm() {
     return <option key={i}>{v.program}</option>;
   });
 
+  const times = selectPrograms.map((v, i) => {
+    if (doSelect.selectProgram === v.program) {
+      return v.time.map((v, i) => <option key={i}>{v}</option>);
+    }
+    return true;
+  });
+
   const prices = selectPrograms.map((v, i) => {
     if (doSelect.selectProgram === v.program) {
       return v.price.map((v, i) => <option key={i}>{v}</option>);
@@ -90,17 +128,16 @@ function CourseForm() {
   });
 
   // Modal開關
-  const [showModal, setShowModal] = useState(false);
+
   function showModalHandler() {
     setShowModal(true);
+    document.body.style.overflow = 'hidden';
   }
   function closeModalHandler() {
     setShowModal(false);
+    document.body.style.overflow = 'visible';
   }
 
-  // 預設值
-  const [place, setPlace] = useState(defaultPlace);
-  const [dateValue, setDateValue] = useState(defaultDate);
   // setDateValue + handleChange 日曆
   function onCalendarChange(newDate) {
     setDateValue(newDate);
@@ -122,6 +159,7 @@ function CourseForm() {
   function resetForm() {
     setPlace(defaultPlace);
     setDateValue(defaultDate);
+    setDoSelect(defaultProgram);
   }
   return (
     <>
@@ -173,9 +211,10 @@ function CourseForm() {
           <div className="block_select">
             <label className="labelText">時間</label>
             <div className="select-style">
-              <select name="form__time" onChange={handleChange}>
-                <option className="time">09:00 - 12:00</option>
-                <option className="time">14:00 - 17:00</option>
+              <select name="form__time" onChange={changeTime}>
+                {times}
+                {/* <option className="time">09:00 - 12:00</option>
+                <option className="time">14:00 - 17:00</option> */}
               </select>
             </div>
             <label className="labelText">人數</label>
@@ -207,6 +246,7 @@ function CourseForm() {
             closeModalHandler={closeModalHandler}
             // setSelectForm={setPlace}
             setSelectForm={onPlaceChange}
+            placeLatLng={placeLatLng}
           />
         )}
       </form>

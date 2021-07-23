@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { FiSearch, FiMapPin, FiX } from 'react-icons/fi';
 import { imgPath } from '../../../config';
 import GoogleMapReact from 'google-map-react';
-import shop_list from './data/shop_list.json';
 import CourseClassRoom from './CourseClassRoom';
 
 //MarkerIcon樣式
@@ -27,7 +26,7 @@ const MarkerIcon = () => {
 
 function CourseMapModal(props) {
   //設定選擇店鋪
-  const { closeModalHandler, setSelectForm } = props;
+  const { closeModalHandler, setSelectForm, placeLatLng } = props;
 
   //const [select, setSelect] = useState('');
 
@@ -58,7 +57,7 @@ function CourseMapModal(props) {
   const queryHandler = () => {
     const keyword = queryString.current.value;
     if (keyword.length === 0) return;
-    const results = shop_list.filter((item) => {
+    const results = placeLatLng.filter((item) => {
       return item.course_place_address.includes(keyword);
     });
     setShops(results);
@@ -67,13 +66,17 @@ function CourseMapModal(props) {
   const [show, setShow] = useState(false);
   const clickShow = (e) => {
     setShow(true);
+    const results = placeLatLng.filter((item) => {
+      return item.course_place_address;
+    });
+    setShops(results);
   };
 
   //自動定位目前位置
   const defaultProps = {
     center: {
-      lat: 22.573696160103022,
-      lng: 120.34492822739263,
+      lat: 0,
+      lng: 0,
     },
     zoom: 16,
   };
@@ -102,7 +105,7 @@ function CourseMapModal(props) {
       alert('Sorry, 你的裝置不支援地理位置功能。');
     }
 
-    const latlngList = shop_list.map((v, i) => {
+    const latlngList = placeLatLng.map((v, i) => {
       return {
         course_place_lat: v.course_place_lat,
         course_place_lng: v.course_place_lng,
