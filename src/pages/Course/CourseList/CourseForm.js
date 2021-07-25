@@ -18,21 +18,26 @@ const selectPrograms = [
   },
 ];
 
-const defaultPlace = '請選擇店鋪';
+function formatDate(d) {
+  var month = '' + (d.getMonth() + 1),
+    day = '' + d.getDate(),
+    year = d.getFullYear();
 
-const defaultProgram = {
-  selectProgram: selectPrograms[0].program,
-  selectPrice: selectPrograms[0].price[0],
-  selectTime: selectPrograms[0].time[0],
-};
+  if (month.length < 2) month = '0' + month;
+  if (day.length < 2) day = '0' + day;
+
+  return [year, month, day].join('-');
+}
+
 const defaultDate = new Date();
+const defaultPlace = '請選擇店鋪';
 
 const initialFormData = Object.freeze({
   form__place: defaultPlace,
-  form__program: defaultProgram,
+  form__program: selectPrograms[0].program,
   form__calendar: defaultDate,
-  // form__time: '09:00 - 12:00',
-  // form__price: '單人 NT$ 1,200',
+  form__time: selectPrograms[0].time[0],
+  form__price: selectPrograms[0].price[0],
 });
 
 function CourseForm(props) {
@@ -40,6 +45,12 @@ function CourseForm(props) {
   // 預設值
   const [place, setPlace] = useState(defaultPlace);
   const [dateValue, setDateValue] = useState(defaultDate);
+
+  const defaultProgram = {
+    selectProgram: selectPrograms[0].program,
+    selectPrice: selectPrograms[0].price[0],
+    selectTime: selectPrograms[0].time[0],
+  };
 
   // Modal開關
   const [showModal, setShowModal] = useState(false);
@@ -54,23 +65,45 @@ function CourseForm(props) {
   const form = useRef(null);
   const [formData, updateFormData] = useState(initialFormData);
   // 將更改表單內容存進formData
-  const handleChange = (e) => {
-    updateFormData({
-      ...formData,
-      [e.target.name]: e.target.value.trim(),
+  // const handleChange = (e) => {
+  //   updateFormData({
+  //     ...formData,
+  //     [e.target.name]: e.target.value.trim(),
+  //   });
+  // };
+
+  //-------------------------將表單資料送至資料庫
+  async function sentCourseFromServer() {
+    const url = `http://localhost:6005/getCourseForm`;
+    // 被用來複製一個或多個物件自身所有可數的屬性到另一個目標物件
+    const formDataInfo = { ...formData };
+    //處理日期格式
+    formDataInfo.form__calendar = formatDate(formDataInfo.form__calendar);
+
+    console.log(JSON.stringify(formDataInfo));
+    const request = new Request(url, {
+      method: 'POST',
+      body: JSON.stringify(formDataInfo),
+      headers: new Headers({
+        Accept: 'application/json',
+        'Content-Type': 'application/json; charset=UTF-8',
+      }),
     });
-  };
+    const response = await fetch(request);
+    const data = await response.json();
+    console.log('報名成功!', data);
+  }
+  //-------------------------------------------------
   //點選報名按鈕
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    console.log(JSON.stringify(formData));
+    // console.log(JSON.stringify(formData));
     // ... submit to API or something
+    sentCourseFromServer();
   };
 
   // 連動下拉式選單 onChange + 更新formData
   const changeProgram = (e) => {
-    //setDoSelect({ selectProgram: e.target.value });
     selectPrograms.map((v, i) => {
       if (e.target.value === v.program) {
         setDoSelect({
@@ -141,6 +174,7 @@ function CourseForm(props) {
   // setDateValue + handleChange 日曆
   function onCalendarChange(newDate) {
     setDateValue(newDate);
+
     updateFormData({
       ...formData,
       form__calendar: newDate,
@@ -161,6 +195,7 @@ function CourseForm(props) {
     setDateValue(defaultDate);
     setDoSelect(defaultProgram);
   }
+
   return (
     <>
       <div className="recheck__width d-flex justify-content-end">
@@ -205,6 +240,13 @@ function CourseForm(props) {
               onChange={onCalendarChange}
               value={dateValue}
               calendarType={'US'}
+              // formatDay={(locale, date) => {
+              //   console.log('locale', locale);
+              //   console.log(date);
+              //   return new Intl.DateTimeFormat(locale, {
+              //     day: '2-digit',
+              //   }).format(date);
+              // }}
             />
           </div>
 

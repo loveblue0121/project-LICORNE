@@ -55,23 +55,6 @@ function CourseList() {
     getCourseFromServer();
   }, []);
 
-  //-------------------------將表單資料送至資料庫
-  // async function sentCourseFromServer() {
-  //   const url = ;
-  //   const formDataInfo = XXX ;
-  //   const request = new Request(url, {
-  //     method: 'POST',
-  //     body: formDataInfo,
-  //     headers: new Headers({
-  //       Accept: 'application/json',
-  //       'Content-Type': 'appliaction/json',
-  //     }),
-  //   });
-  //   const response = await fetch(request);
-  //   const data = await response.json();
-
-  // }
-
   //--------------------------
   return (
     <>
@@ -109,13 +92,6 @@ function CourseList() {
               </a>
             </li>
           </ul>
-
-          {/* <div className="btn_group_down">
-            <button className="btn">報名</button>
-            <div className="loveBox">
-              <FiHeart data-feather="heart" className="far" />
-            </div>
-          </div> */}
         </div>
         <hr className="line" />
         <CourseContent infoBtn={infoBtn} />
