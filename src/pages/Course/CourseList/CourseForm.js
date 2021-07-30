@@ -111,12 +111,15 @@ function CourseForm(props) {
           selectPrice: v.price[0],
           selectTime: v.time[0],
         });
+
+        updateFormData({
+          ...formData,
+          [e.target.name]: e.target.value.trim(),
+          form__price: v.price[0],
+          form__time: v.time[0],
+        });
       }
       return true;
-    });
-    updateFormData({
-      ...formData,
-      [e.target.name]: e.target.value.trim(),
     });
   };
   const changeTime = (e) => {
