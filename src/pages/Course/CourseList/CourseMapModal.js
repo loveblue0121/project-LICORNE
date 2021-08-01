@@ -3,7 +3,6 @@ import { FiSearch, FiMapPin, FiX } from 'react-icons/fi'
 import { imgPath } from '../../../config'
 import GoogleMapReact from 'google-map-react'
 import CourseClassRoom from './CourseClassRoom'
-import { clearConfigCache } from 'prettier'
 
 //MarkerIcon樣式
 
@@ -34,7 +33,7 @@ const MarkerCurentPosition = (props) => {
       >
         <p className="modal__marker-name">{props.classRoom}</p>
         <img
-          src={imgPath + '/images/course/street-view-solid.svg'}
+          src={imgPath + '/images/course/map-markerCurentPosition.svg'}
           alt=""
           className="modal__marker"
         />
