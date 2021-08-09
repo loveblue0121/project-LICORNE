@@ -26,7 +26,7 @@ yarn-error.log*
 testing
 .vscode
 
+*.png
 *.jpg
 *.jpeg
-*.png
 *.svg

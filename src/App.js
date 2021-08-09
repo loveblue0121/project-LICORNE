@@ -1,68 +1,29 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import React, { useState, useEffect } from 'react'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 
-import Home from './pages/Home';
-import Bestseller from './pages/Bestseller';
-import Course from './pages/Course';
-import Custom from './pages/Custom';
-import Checkout from './pages/Checkout';
-import Member from './pages/Member';
-import Official from './pages/Official';
-import LoginAndRegister from './pages/LoginAndRegister';
-import CourseList from './pages/Course/CourseList/CourseList';
-// 共通元件
-import Header from './components/Header';
-import SecondaryFooter from './components/SecondaryFooter';
+import Direction from './Direction'
+import Water from './animations/Water'
 
 function App() {
+  const [isAmount, setIsAmount] = useState(false)
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsAmount(true)
+    }, 3000)
+  }, [])
   return (
-    <Router>
-      <>
-        <Switch>
-          <Route path="/bestseller">
-            <Header />
-            <Bestseller />
-            <SecondaryFooter />
+    <>
+      {!isAmount && <Water />}
+      {isAmount && (
+        <Router>
+          <Route path="*">
+            <Direction />
           </Route>
-          <Route path="/course">
-            <Header />
-            <Course />
-          </Route>
-          <Route path="/courseList">
-            <Header />
-            <CourseList />
-          </Route>
-          <Route path="/custom">
-            <Custom />
-          </Route>
-          <Route path="/checkout">
-            <Header />
-            <Checkout />
-            <SecondaryFooter />
-          </Route>
-          <Route path="/member">
-            <Header />
-            <Member />
-            <SecondaryFooter />
-          </Route>
-          <Route path="/official">
-            <Header />
-            <Official />
-            <SecondaryFooter />
-          </Route>
-          <Route path="/login">
-            <Header />
-            <LoginAndRegister />
-            <SecondaryFooter />
-          </Route>
-          <Route exact path="/">
-            <Header />
-            <Home />
-          </Route>
-        </Switch>
-      </>
-    </Router>
-  );
+        </Router>
+      )}
+    </>
+  )
 }
 
-export default App;
+export default App

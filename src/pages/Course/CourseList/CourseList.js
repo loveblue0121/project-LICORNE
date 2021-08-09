@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import './CourseList.css'
 import { imgPath } from '../../../config'
+import authentication from '../../../utils/authentication'
 import CourseContent from './CourseContent'
 import CourseForm from './CourseForm'
 
@@ -64,19 +65,24 @@ function CourseList() {
 
   //-------------------------將收藏送至資料庫
   async function sentCollect() {
-    const url = `http://localhost:6005/getCollect`
+    const executor = async (token) => {
+      const url = `http://localhost:6005/getCollect`
 
-    const request = new Request(url, {
-      method: 'POST',
-      body: JSON.stringify(courseCollect),
-      headers: new Headers({
-        Accept: 'application/json',
-        'Content-Type': 'application/json; charset=UTF-8',
-      }),
-    })
-    const response = await fetch(request)
-    const data = await response.json()
-    console.log('收藏成功!', data)
+      const request = new Request(url, {
+        method: 'POST',
+        body: JSON.stringify(courseCollect),
+        headers: new Headers({
+          Accept: 'application/json',
+          'Content-Type': 'application/json; charset=UTF-8',
+          Authorization: 'Bearer ' + token,
+        }),
+      })
+      const response = await fetch(request)
+      const data = await response.json()
+      console.log('收藏成功!', data)
+    }
+
+    authentication(executor)
   }
   //-------------------------------------------------
 
@@ -98,22 +104,22 @@ function CourseList() {
         <div className="content_down">
           <ul className="info_btn">
             <li>
-              <a
-                href="#/"
+              <span
+                role="button"
                 className={clickInfo}
                 onClick={clickInfoBtn(infoBtnClassName, defaultClassName)}
               >
                 課程內容
-              </a>
+              </span>
             </li>
             <li>
-              <a
-                href="#/"
+              <span
+                role="button"
                 className={click}
                 onClick={clickDescription(infoBtnClassName, defaultClassName)}
               >
                 報名須知
-              </a>
+              </span>
             </li>
           </ul>
         </div>

@@ -1,5 +1,5 @@
-import React from 'react'
-import { FiSearch, FiUser, FiHeart, FiShoppingBag } from 'react-icons/fi'
+import React from 'react';
+import { FiSearch, FiUser, FiHeart, FiShoppingBag } from 'react-icons/fi';
 
 function HeaderBar() {
   return (
@@ -56,6 +56,6 @@ function HeaderBar() {
         </div>
       </header>
     </>
-  )
+  );
 }
-export default HeaderBar
+export default HeaderBar;
