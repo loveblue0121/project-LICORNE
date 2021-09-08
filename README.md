@@ -34,3 +34,28 @@
 可以很明顯的發現，時段以及人數價錢已經更動為一日方案的價格
 
 - Google Map API：使用google map API，透過地圖呈現店點、以及選擇店鋪
+
+#### 初始畫面
+點選表單中的選擇店鋪進入畫面後，首先看到的是目前使用者的位置顯示在地圖上
+左邊清單預設是顯示總店的資訊
+
+
+![map1](https://user-images.githubusercontent.com/83852316/132485611-192a08dd-ce34-4e15-bd24-c3afe612915a.png)
+
+
+不清楚附近有無分店的話，可以按下「顯示鄰近店鋪」來查看附近有沒有鄰近分店
+### 顯示鄰近店鋪 (附近沒有鄰近店鋪的情況下)
+
+![map2](https://user-images.githubusercontent.com/83852316/132486164-5a945d04-c036-4003-ad0d-e64eab47ed73.png)
+
+
+### 顯示鄰近店鋪 (附近有鄰近店鋪的情況)
+
+![map3](https://user-images.githubusercontent.com/83852316/132487942-2672cf5c-2e96-4f2e-b291-4d1b64a1594b.png)
+
+
+#### 搜尋店鋪
+也可使用關鍵字搜尋店鋪
+可以看到左側清單顯示的是搜尋後的結果
+![mapSearch](https://user-images.githubusercontent.com/83852316/132488750-72371491-e9f9-4a4c-bbb2-1df060602084.png)
+
